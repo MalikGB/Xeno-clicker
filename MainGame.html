@@ -6,23 +6,22 @@
 <body>
 <header>
     <script src="NPC_AI.js"></script> 
-    <script src = "Sound.js"></script>
     <p> Credits</p>
 </header>
 <div class="MainGame">
     <div class="Shop">
         <div>
             <img src = "images/dunban.png" class="Character" id="Dunban" onclick="PurchaseCharacter(this)">
-            <p> 400 Points</p>
+            <p id = "dunbanPoints"> 400 Points</p>
         </div>
         <div>
             <img src = "images/Melia.png" class="Character" id="Melia" onclick="PurchaseCharacter(this)">
-            <p> 200 Points</p>
+            <p id = "meliaPoints"> 200 Points</p>
             
         </div>
         <div>
             <img src = "images/Reyn.png" class="Character" id="Reyn" onclick="PurchaseCharacter(this)">
-            <p> 50 Points</p>
+            <p id = "reynPoints"> 50 Points</p>
         </div>
     </div>
     <div class="Score">
@@ -42,25 +41,45 @@
     var melia = document.getElementById("Melia")
     var dunban = document.getElementById("Dunban")
     var reynPoints = 50;
+    var reynPointEle = document.getElementById("reynPoints")
     var meliaPoints = 200;
+    var meliaPointEle = document.getElementById("meliaPoints")
     var dunbanPoints = 400;
+    var dunbanPointsEle = document.getElementById("dunbanPoints")
     var score = 0;
     var cooldown = 20;
     var Dunban_Bought = false;
     var Melia_Bought = false;
     var Reyn_Bought = false;
     var reynSound = new Sound("sounds/reyn_entrannce.wav")
-    function CharacterAttack(){
-        if(Dunban_Bought==true){
-
-        }
-        if(Melia_Bought == true){
-
-        }
+    var dunbanSound = new Sound("sounds/DunbanEntrance.wav")
+    var meliaSound = new Sound("sounds/MeliaEntrance.wav")
+    var ReynCooldown = 30000
+    var MeliaCooldown = 50000
+    var DunbanCooldown = 80000
+    var backgroundMusic= new Sound("sounds/Time to Fight!.mp3")
+    setInterval(DunbanAttack,DunbanCooldown);
+    setInterval(MeliaAttack, MeliaCooldown);
+    setInterval(ReynAttack, ReynCooldown);
+    
+    function ReynAttack(){
         if (Reyn_Bought == true){
-            //Need to increment timer
-            score += reynMoves();
-            // Have the method return the points earned.
+           
+           UpdateScore(reynMoves())
+       }
+
+    }
+    function MeliaAttack(){
+        if(Melia_Bought == true){
+           
+           UpdateScore(MeliaMoves())
+       }
+
+    }
+    function DunbanAttack(){
+       
+        if(Dunban_Bought==true){
+            UpdateScore(DunbanMoves())
         }
     } 
     function PurchaseCharacter(chr){
@@ -68,50 +87,56 @@
             if(score>= reynPoints){
                 Reyn_Bought = true;
                 console.log("bought")
-                score-= reynPoints;
                 reynSound.play();
+                UpdateScore(reynPoints*-1)
+                reynPointEle.innerHTML = "xxx"
             }
             else{
-                console.log("Not enough points")
+                alert("Not enough points")
             }
-            console.log("Reyn")
         }
         if(chr.id == "Melia"){
             if(score>= meliaPoints){
                 Melia_Bought = true;
-                //Buy / activate Melia
-                score-= meliaPoints;
+                UpdateScore(meliaPoints*-1)
+                meliaSound.play();
+                
+                meliaPointEle.innerHTML= "xxx"
             }
             else{
-                console.log("Not enough points")
+                alert("Not enough points")
             }
-            console.log("Melia")
         }
         if (chr.id == "Dunban"){
             if(score>= dunbanPoints){
                 Dunban_Bought = true;
-                //Buy / activate Dunban
-                score-= dunbanPoints;
+                dunbanSound.play();
+                UpdateScore(dunbanPoints*-1)
+                dunbanPointsEle.innerHTML = "xxx" // could replace this with a cooldown timer
             }
             else{
-                console.log("Not enough points")
+                alert("Not enough points")
             }
-            console.log("Dunban")
+           
         }
-        scoreElement.innerHTML = "Score: "+ score;
+        
     }
     function RegisterHit(){
+        backgroundMusic.play();
         if(enemy.className == 'HitAnimation'){
             enemy.className= 'HitAnimationAlt'
         }
         else{
             enemy.className= 'HitAnimation';
         }
-        score+=1;
+        UpdateScore(1)
         console.log("Hit");
-        scoreElement.innerHTML = "Score: "+ score;
-        CharacterAttack();
+        
     }
-    
+    function UpdateScore(points){
+        score+= points
+        scoreElement.innerHTML = "Score: "+ score;
+
+    }
     
 </script>
