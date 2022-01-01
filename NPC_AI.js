@@ -5,6 +5,7 @@ lariat = new Sound("sounds/Lariat.wav")
 ReynMiss = new Sound("sounds/Reyn_miss.wav")
 
 //Dunban Attacks
+
 soaringTempets = new Sound("sounds/Soaring_tempest.wav")
 StealStrike = new Sound("sounds/StealStrike.wav")
 WorldlySlash = new Sound("sounds/WorldlySlash.wav")
